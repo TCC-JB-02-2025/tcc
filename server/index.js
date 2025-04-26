@@ -2,7 +2,11 @@ const express = require("express");
 const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const os = require('os');  
+
+const dotenv = require("dotenv");
+dotenv.config();
+
+const PORT = process.env.PORT || 10000 
 
 const app = express();
 
@@ -10,12 +14,18 @@ app.use(bodyParser.json());
 app.use(cors()); 
 
 
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "",
-//     database: "mensagem_db"
-// });
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT), // Convert port to a number
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0    
+});
+    
 
 app.use((req, res, next) => {
     const ip = req.ip || req.connection.remoteAddress;  // Get the IP address
@@ -37,7 +47,14 @@ app.use((req, res, next) => {
 // });
 
 app.get("/", (req,res) => {
-    res.json({message: "DS é o TERROR"});
+    pool.query("SELECT * FROM teste", (err, results) => {
+        if (err) {
+            console.error("Erro ao executar a consulta:", err);
+            res.status(500).json({ error: "Erro ao executar a consulta" });
+            return;
+        }
+        res.json(results);
+    });
 });
 
 // app.post("/", (req,res) => {
@@ -83,6 +100,6 @@ app.get("/", (req,res) => {
 // });
 
 
-app.listen(3000, ()=>{
+app.listen(PORT, ()=>{
     console.log(`Servidor rodando na porta 3000`);
 });
