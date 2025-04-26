@@ -37,7 +37,7 @@ app.use((req, res, next) => {
 // });
 
 app.get("/", (req,res) => {
-    res.json({message: "Hello World"});
+    res.json({message: "DS é o TERROR"});
 });
 
 // app.post("/", (req,res) => {
