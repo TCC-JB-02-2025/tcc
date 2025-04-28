@@ -34,7 +34,7 @@ const pool = mysql.createPool({
     connectionLimit: 10, // Limite de conexões simultâneas
     queueLimit: 0 // Sem limite de filas de espera
 });
-    
+
 // Printa no console o IP, método e URL de cada requisição
 app.use((req, res, next) => {
     const ip = req.ip || req.connection.remoteAddress;  // Get the IP address
@@ -63,8 +63,6 @@ app.get("/", (req,res) => {
 });
 
 app.listen(PORT, ()=>{
-    console.log(process.env)
+    //console.log(process.env)
     console.log(`Servidor rodando na porta ${PORT}`);
 });
-
-// nada
