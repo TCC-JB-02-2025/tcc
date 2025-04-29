@@ -1,4 +1,5 @@
 const mysql = require("mysql2");
+const fs = require("fs");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -26,14 +27,20 @@ function runQuery(query){
     });
 }
 
-print("Rodando script do banco")
-runQuery(`
-    CREATE TABLE Teste(
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        name VARCHAR(50) NULL,
-        descricao VARCHAR(50) NULL
-    )
-`);
+async function runMigrations() {
+    // Define a pasta onde estão os arquivos de migração
+    const migrationsDir = path.join(__dirname, 'migrations');
 
+    // Verifica se a pasta de migrações existe
+    const files = fs.readdirSync(migrationsDir);
 
+    // Verifica se existem arquivos .sql na pasta de migrações e os ordena em 
+    // ordem alfabética (ou numérica, dependendo do nome do arquivo)
+    const sqlFiles = files.filter(file => file.endsWith('.sql')).sort();
+
+    console.log(sqlFiles)
+}
+
+// Run the migration function
+runMigrations();
 
