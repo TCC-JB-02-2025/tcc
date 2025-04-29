@@ -1,5 +1,5 @@
 -- Down
-DROP TABLE IF EXISTS Teste;
+DROP TABLE IF EXISTS searchIndex;
 
 
 -- Up
