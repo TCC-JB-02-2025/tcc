@@ -1,23 +1,26 @@
 -- Down
-DROP TABLE IF EXISTS searchIndex;
+DROP TABLE IF EXISTS searchIndex; -- Remove a tabela searchIndex se ela existir
 
 
 -- Up
 CREATE TABLE searchIndex (
-    index_id INT AUTO_INCREMENT PRIMARY KEY, -- Unique ID for each entry in the search index
-    search_text TEXT, -- The text content to be searched (e.g., name, description)
-    item_type VARCHAR(50) NOT NULL, -- The type of the item (e.g., 'Pessoa', 'Produto')
-    item_id INT NOT NULL, -- The ID linking to the original item in its respective table
+    index_id INT AUTO_INCREMENT PRIMARY KEY, -- ID único para cada entrada no índice de busca
+    search_text TEXT, -- O conteúdo de texto a ser buscado (ex: nome, descrição)
+    item_type VARCHAR(50) NOT NULL, -- O tipo do item (ex: 'Pessoa', 'Produto')
+    item_id INT NOT NULL, -- O ID que liga ao item original em sua respectiva tabela
 
-    -- Add indexes for faster lookups
-    INDEX idx_item_type (item_type),
-    INDEX idx_item_id (item_id),
-    INDEX idx_item_type_id (item_type, item_id), -- Useful if querying by type and id
+    -- Adiciona índices para buscas mais rápidas
+    INDEX idx_item_type (item_type),
+    INDEX idx_item_id (item_id),
+    INDEX idx_item_type_id (item_type, item_id), -- Útil se buscando por tipo e id
 
-    -- Add a FULLTEXT index on search_text for efficient text searching
-    FULLTEXT KEY ft_search_text (search_text)
+    -- Adiciona um índice FULLTEXT em search_text para busca de texto eficiente
+    FULLTEXT KEY ft_search_text (search_text)
 );
 
-SELECT *
-FROM searchIndex
-WHERE MATCH (search_text) AGAINST ('joao' IN BOOLEAN MODE);
+
+--EXEMPLO DE COMO FAZER SELECT COM ISSO
+--SELECT *
+--FROM searchIndex
+--WHERE MATCH (search_text) AGAINST ('joao' IN BOOLEAN MODE); -- Seleciona entradas onde o texto de busca corresponde a 'joao' (usando modo booleano para busca FULLTEXT)
+--
