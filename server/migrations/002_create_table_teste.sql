@@ -1,8 +1,8 @@
 -- Down
-DROP TABLE IF EXISTS Teste;
+DROP TABLE IF EXISTS Teste2Nigga;
 
 -- Up
-CREATE TABLE Teste(
+CREATE TABLE Teste2Nigga(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NULL,
     descricao VARCHAR(50) NULL
