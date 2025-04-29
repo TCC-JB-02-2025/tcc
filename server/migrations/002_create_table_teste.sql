@@ -1,0 +1,9 @@
+-- Down
+DROP TABLE IF EXISTS Teste;
+
+-- Up
+CREATE TABLE Teste(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NULL,
+    descricao VARCHAR(50) NULL
+);
