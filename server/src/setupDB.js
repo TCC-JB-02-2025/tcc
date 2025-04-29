@@ -14,11 +14,6 @@ const connection = mysql.createConnection({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     multipleStatements: true, // Permite múltiplas instruções SQL em uma única consulta
-    
-
-    waitForConnections: true, // Espera por conexões evitando criar novas
-    connectionLimit: 10, // Limite de conexões simultâneas
-    queueLimit: 0 // Sem limite de filas de espera
 });
 
 console.log("Conectando ao banco de dados");
@@ -39,12 +34,8 @@ function runQuery(query, file){
 }
 
 async function runMigrations() {
-
-
-
-
     // Define a pasta onde estão os arquivos de migração
-    const migrationsDir = path.join(__dirname, 'migrations');
+    const migrationsDir = path.join(__dirname, '..', 'migrations');
 
     // Verifica se a pasta de migrações existe
     const files = fs.readdirSync(migrationsDir);
