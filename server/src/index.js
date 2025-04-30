@@ -6,7 +6,7 @@ const mysql = require("mysql2");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-//Configuração de mini-bibliotecas
+//Inicialização do dotenv para usar variaveis de ambiente (estão no arquivo .env)
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -15,8 +15,13 @@ const PORT = process.env.PORT || 10000
 
 //Inicialização do servidor
 const app = express();
-app.use(bodyParser.json()); 
-app.use(cors()); 
+
+
+// Configuração do servidor
+app.use(bodyParser.json()); // Faz o parse do body das requisições para JSON
+app.use(cors()); // Permite requisições de outros domínios (CORS)
+
+
 
 // Criação do pool de conexões com o BD
 // (pool é um conjunto de conexões que podem ser reutilizadas,
@@ -34,6 +39,12 @@ const pool = mysql.createPool({
     connectionLimit: 10, // Limite de conexões simultâneas
     queueLimit: 0 // Sem limite de filas de espera
 });
+
+// Importando as rotas
+const userRoutes = require("./userRoutes")(pool);
+
+// Usando as rotas
+app.use("/users", userRoutes);
 
 // Printa no console o IP, método e URL de cada requisição
 app.use((req, res, next) => {
