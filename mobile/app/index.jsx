@@ -47,10 +47,10 @@ export default function IndexScreen() {
   const popUpRef = useRef(null);
 
   const handleBottomSheetChanges = useCallback((index) => {
+    // Se o indice não existir no array de snapPoints, setamos para o último
     if(index > snapPoints.length - 1){
       index = snapPoints.length - 1
     }
-    console.log("handleBottomSheetChanges", index);
     setBottomSheetIndex(index);
   }, []);
 
