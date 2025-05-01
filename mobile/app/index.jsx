@@ -1,10 +1,20 @@
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Button, FlatList } from "react-native";
 import React, { useState, useRef, useCallback } from "react";
 import BottomSheet, { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import SearchBar from "./../components/SearchBar"
 import BusLineCard from "./../components/BusLineCard"
+import PopUpComponent from "./../components/PopUpComponent"
+
+function PopUpContent(){
+  return (
+    <>
+      <Text>Olá do Pop-up!</Text>
+      <Text>Este é um exemplo de conteúdo dentro do pop-up.</Text>
+    </>
+  );
+}
 
 function SheetPreview(){
   return (
@@ -35,6 +45,7 @@ export default function IndexScreen() {
   const snapPoints = ["40%","100%"]
   const [bottomSheetIndex, setBottomSheetIndex] = useState(0) //Começa no primeiro ponto
   const bottomSheetModalRef = useRef(null);
+  const popUpRef = useRef(null);
 
   const handleBottomSheetChanges = useCallback((index) => {
     setBottomSheetIndex(index);
@@ -43,6 +54,15 @@ export default function IndexScreen() {
   const openBottomSheet = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
+
+  const handleShowPopUp = () => {
+    // 3. Use a referência para chamar o método 'show' do PopUpComponent
+    if (popUpRef.current) {
+      // Passamos o componente que queremos mostrar (MyPopUpContent)
+      // e um objeto com as props que MyPopUpContent precisa (message neste exemplo)
+      popUpRef.current.show(PopUpContent, { message: 'Olá do Pop-up na tela inicial!' });
+    }
+  };
 
   const renderContent = () => {
     switch (bottomSheetIndex) {
@@ -56,11 +76,12 @@ export default function IndexScreen() {
         return null
     }
   }
+
   return (
       <View style={styles.container}>
         <Button
           title="Botao"
-          onPress={openBottomSheet}
+          onPress={handleShowPopUp}
           >
 
         </Button>
@@ -75,6 +96,8 @@ export default function IndexScreen() {
             {renderContent()}
           </BottomSheetView>
 		  	</BottomSheetModal>
+
+        <PopUpComponent ref={popUpRef} />
       </View>
   );
 }
