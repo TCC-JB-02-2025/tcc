@@ -12,11 +12,6 @@ const PopUpComponent = forwardRef((props, ref) => {
   // Função para esconder o pop-up
   const hide = useCallback(() => {
     setIsVisible(false);
-    // Opcional: limpar o conteúdo após a animação de fechamento
-    // setTimeout(() => {
-    //   setContent(null);
-    //   setContentProps({});
-    // }, 300); // Ajuste o tempo conforme a animação do Modal
   }, []); // Dependências vazias significam que a função hide é criada uma vez e reutilizada
 
   // Função para mostrar o pop-up
@@ -34,6 +29,7 @@ const PopUpComponent = forwardRef((props, ref) => {
   }));
 
   // O que o componente renderiza (o Modal)
+  // O Modal é um componente que cobre toda a tela e exibe o conteúdo dentro dele
   return (
     <Modal
       transparent={true}
@@ -41,16 +37,21 @@ const PopUpComponent = forwardRef((props, ref) => {
       animationType="fade"
       onRequestClose={hide}
       statusBarTranslucent
-    >
-      {/* Código do Modal explicado anteriormente */}
+    > 
+      {/* O <TouchableWithoutFeedback> é usado para detectar toques fora do conteúdo do pop-up e fechar o modal */}
       <TouchableWithoutFeedback onPress={hide}>
-        <View style={styles.overlay}>
+        {/* O <View> é o contêiner do fundo*/}
+        <View style={styles.overlay}> 
 
-          <TouchableWithoutFeedback onPress={() => {}}>
+          {/* Previne o fechamento do modal ao tocar no conteúdo */}
+          <TouchableWithoutFeedback onPress={() => {}}> 
+            {/* View do popUp em si */}
             <View style={styles.popUpContainer}>
               <TouchableOpacity onPress={hide}>
                 <Icon name="close" size={32} color="#000" />
               </TouchableOpacity>
+              {/* Se tiver conteudo Renderiza o conteudo do popup */}
+              {/* Se o conteúdo não estiver definido, renderiza null (nada) */}
               {content ? React.createElement(content, { ...contentProps, onClose: hide }) : null}
               
             </View>
