@@ -1,0 +1,30 @@
+// src/styles/custom.scss (ou onde você preferir criar seu arquivo Sass)
+
+// 1. Sobrescreva as variáveis padrão do Bootstrap aqui
+// Antes de importar o Bootstrap!
+
+$primary: #0d6efd; 
+$secondary: #6c757d; 
+$success: #28a745; 
+$info: #0dcaf0;
+$warning: #ffc107;
+$danger: #dc3545;
+
+$light: #f8f9fa;
+$dark: #212529;
+$white: #ffffff;
+$body-bg: $light;
+$body-color: $dark;
+$font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+
+// 2. Importe o Bootstrap aqui
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+
+// 3. Adicione seu CSS personalizado aqui
+// Exemplo:
+// body {
+//   background-color: $primary;
+//   color: $secondary;
+// }
