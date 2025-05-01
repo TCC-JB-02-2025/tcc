@@ -51,7 +51,7 @@ module.exports = (pool) => {
 
     for (const field of requiredFields) {
       if (!user[field]) {
-        return res.status(400).json({ error: `Missing required field: ${field}` });
+        return res.status(400).json({ error: `Missing required field: ${field}`, request: req.body });
       }
     }
 
@@ -67,7 +67,7 @@ module.exports = (pool) => {
         if (errorCode === 'ER_DUP_ENTRY') {
           // Verifica qual campo causou o erro
           const field = error.sqlMessage.match(/Duplicate entry '.*' for key '(.*)'/)[1];
-          return res.status(409).json({ error: `Duplicate entry for field: ${field}` });
+          return res.status(409).json({ error: `Duplicate entry for field: ${field}` , request: req.body });
         }
       }
       return res.status(201).json({ id: results.insertId, ...user });
@@ -87,5 +87,6 @@ module.exports = (pool) => {
       res.json(results[0]);
     });
   });
+
   return router;
 }

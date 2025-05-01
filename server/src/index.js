@@ -42,9 +42,13 @@ const pool = mysql.createPool({
 
 // Importando as rotas
 const userRoutes = require("./userRoutes")(pool);
+//const XXXXRoutes = require("./XXXX")(pool);
+//const YYYYRoutes = require("./YYYY")(pool);
 
 // Usando as rotas
 app.use("/users", userRoutes);
+//app.use("/XXXX", XXXXRoutes);
+//app.use("/YYYY", YYYYRoutes);
 
 // Printa no console o IP, método e URL de cada requisição
 app.use((req, res, next) => {
@@ -58,7 +62,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/ping", (req, res) => {
-    res.json({ message: "Pong!" });
+    res.json({ message: "Pong!" ,request: req.body});
 });
 
 
