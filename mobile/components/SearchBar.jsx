@@ -4,10 +4,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function SearchBar({value, onChangeText, placeholder}) {
-
+  
   return (
       <View style={styles.container}>
-        {/* <FontAwesome name="search" size={24} color="black" style={styles.icon} /> */}
         <Icon name="search" size={32} color="#000" style={styles.icon} />
         <TextInput
           value={value}
@@ -36,11 +35,16 @@ const styles = StyleSheet.create({
   },
 
   icon:{
-    marginLeft: 13
+    marginLeft: 13,
   },
 
   input: {
     fontSize: 24,
+    width: "100%",
+    height: "100%",
+
+    // borderColor: "#FF0000",
+    // borderWidth: 4,
   },
 
 });
