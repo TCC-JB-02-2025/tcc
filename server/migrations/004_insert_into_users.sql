@@ -1,9 +1,9 @@
 -- Down
 -- Deleta todos os usuários da tabela User
-DELETE FROM User;
+DELETE FROM Users;
 
 -- Up
-INSERT INTO User (
+INSERT INTO Users (
     full_name,
     cpf,
     email,
@@ -30,7 +30,7 @@ INSERT INTO User (
     '{"theme": "dark", "language": "pt-BR"}' -- Objeto JSON para configurações
 );
 
-INSERT INTO User (
+INSERT INTO Users (
     full_name,
     cpf,
     email,
