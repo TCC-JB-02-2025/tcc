@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Button, FlatList } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Button, FlatList } from "react-native";
 import React, { useState, useRef, useCallback } from "react";
 import BottomSheet, { BottomSheetView, BottomSheetModal } from '@gorhom/bottom-sheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -32,7 +32,6 @@ function SheetFull(){
 
   return (
     <>
-	<Text>nigga</Text>
       <SearchBar
         value={searchValue}
         onChangeText={setSearchValue}
@@ -42,12 +41,16 @@ function SheetFull(){
 }
 
 export default function IndexScreen() {
-  const snapPoints = ["40%","100%"]
+  const snapPoints = ["40%","95%"]
   const [bottomSheetIndex, setBottomSheetIndex] = useState(0) //Começa no primeiro ponto
   const bottomSheetModalRef = useRef(null);
   const popUpRef = useRef(null);
 
   const handleBottomSheetChanges = useCallback((index) => {
+    if(index > snapPoints.length - 1){
+      index = snapPoints.length - 1
+    }
+    console.log("handleBottomSheetChanges", index);
     setBottomSheetIndex(index);
   }, []);
 
@@ -81,18 +84,19 @@ export default function IndexScreen() {
       <View style={styles.container}>
         <Button
           title="Botao"
-          onPress={handleShowPopUp}
+          onPress={openBottomSheet}
           >
 
         </Button>
         <BottomSheetModal
           enablePanDownToClose={false}
-          index={1}
+          index={0}
           snapPoints={snapPoints} 
           onChange={handleBottomSheetChanges}
           ref={bottomSheetModalRef}
           >
           <BottomSheetView style={styles.contentContainer}>
+            <Text>{bottomSheetIndex}</Text>
             {renderContent()}
           </BottomSheetView>
 		  	</BottomSheetModal>
