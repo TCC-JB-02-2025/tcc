@@ -13,6 +13,8 @@ CREATE TABLE Users (
     address_complement VARCHAR(255), 
     address_city VARCHAR(255) NOT NULL, 
     cep VARCHAR(8) NOT NULL, 
+    -- latitude DECIMAL(10, 8) NOT NULL,
+    -- longitude DECIMAL(11, 8) NOT NULL,
     notifications_json JSON DEFAULT '{}',
     settings_json JSON DEFAULT '{}',
     creation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
