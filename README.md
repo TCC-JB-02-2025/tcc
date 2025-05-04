@@ -1,2 +1,2 @@
 # BusHere
-Nome ainda para ser mudado
+Nome ainda pode ser mudado
