@@ -62,7 +62,7 @@ app.use((req, res, next) => {
 });
 
 app.get("/ping", (req, res) => {
-    res.json({ message: "Pong!" ,request: req.body});
+    res.json({ message: "Palmeiras!" ,request: req.body});
 });
 
 
