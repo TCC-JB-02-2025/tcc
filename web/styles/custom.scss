@@ -21,8 +21,10 @@ $font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
 // 2. Importe o Bootstrap aqui
 @import "../node_modules/bootstrap/scss/bootstrap";
 
+// 3. Importe os Bootstrap Icons aqui
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 
-// 3. Adicione seu CSS personalizado aqui
+// 4. Adicione seu CSS personalizado aqui
 // Exemplo:
 // body {
 //   background-color: $primary;
