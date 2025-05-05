@@ -7,6 +7,9 @@ import Home from "./home";
 import SideBar from "../components/SideBar";
 import Header from "../components/Header";
 
+import "./index.css";
+import "../styles/SideBar.css";
+
 function PopUpContent({}) {
   return (
     <div>
@@ -20,14 +23,12 @@ function PopUpContent({}) {
 function App() {
   return (
     <Router>
-      <div className="container-fluid">
-        <div className="row">
+      <div className="container-fluid p-0" >
+        <div className="d-flex w-100"> {/* Usando flex */}
 
-          <aside className="col-md-3 col-lg-2 p-0">
-            <SideBar />
-          </aside>
+          <SideBar />
 
-          <main className="col-md-9 col-lg-10">
+          <main className="flex-grow-1"> {/* A main ocupará o espaço restante */}
             <Header />
 
             <div className="py-4">
