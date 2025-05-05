@@ -1,0 +1,11 @@
+/* #sidebar {
+    transition: 1.2s !important;
+    width: 10vw;
+}
+
+#sidebar:hover {
+    width: 30vw;
+}
+
+#sidebar a:hover {
+    /* background-color: var(--bs-primary) !important; */
