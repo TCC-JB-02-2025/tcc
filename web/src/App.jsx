@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { useState, useEffect, useRef} from 'react'
 
 import PopUpComponent from "../components/PopUpComponent";
-import Home from "./home";
+import Home from "./Home";
 import SideBar from "../components/SideBar";
 import Header from "../components/Header";
 
@@ -14,7 +14,7 @@ import "../styles/SideBar.css";
 function App() {
   return (
     <Router>
-      <div className="container-fluid p-0 bg-blue" >
+      <div className="container-fluid p-0 bg-blue">
         <div className="d-flex w-100"> {/* Usando flex */}
 
           <SideBar />
