@@ -10,30 +10,22 @@ import Header from "../components/Header";
 import "./index.css";
 import "../styles/SideBar.css";
 
-function PopUpContent({}) {
-  return (
-    <div>
-      <h1>PopUp</h1>
-      <h2>Conteúdo do PopUp</h2>
-      <p>Este é o conteúdo do pop-up.</p>
-    </div>
-  );
-}
 
 function App() {
   return (
     <Router>
-      <div className="container-fluid p-0" >
+      <div className="container-fluid p-0 bg-blue" >
         <div className="d-flex w-100"> {/* Usando flex */}
 
           <SideBar />
 
           <main className="flex-grow-1"> {/* A main ocupará o espaço restante */}
-            <Header />
+            <Header 
+              pageName={"nomePagina"}/>
 
             <div className="py-4">
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" index element={<Home />} />
               </Routes>
             </div>
           </main>

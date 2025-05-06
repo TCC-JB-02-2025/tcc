@@ -3,7 +3,7 @@ import PopUpComponent from "../components/PopUpComponent";
 
 function PopUpContent() {
   return (
-    <div className="p-3">
+    <div className="p-3 bg-blue">
       <h2>Conteúdo do PopUp</h2>
       <p>Este é o conteúdo do PopUp.</p>
     </div>
