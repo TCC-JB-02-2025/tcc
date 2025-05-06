@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 
-function SideButton({name, icon, href = "#", isOpen = false}){
+function SideButton({name, icon, href = "#", isOpen = false, style = {}}){
     const spanStyle = {
         opacity: isOpen ? 1 : 0,
         transition: "opacity 0.3s ease-in-out",
@@ -11,9 +11,9 @@ function SideButton({name, icon, href = "#", isOpen = false}){
         width: 0, //Para não afetar o layout
     }
     return (
-    <Link to={href} className="d-flex align-items-center p-2 rounded text-decoration-none text-dark sidebar-button w-100 border-10 border-bottom }">
-        <i className={`bi bi-${icon} me-2 fs-1`} />
-        <span style={spanStyle} className="sidebar-button-text fw-bold">{name}</span>
+    <Link to={href} className="d-flex align-items-center p-2 rounded text-decoration-none text-dark sidebar-button w-100 border-10 border-bottom  " style={style}>
+        <i className={`bi bi-${icon} fs-1`} />
+        <span style={spanStyle} className="sidebar-button-text fw-bold ms-2">{name}</span>
     </Link>
     );
 }
@@ -21,12 +21,12 @@ function SideButton({name, icon, href = "#", isOpen = false}){
 
 function SideBar() {
     const [isHovered, setIsHovered] = useState(false);
-    const sidebarWidth = isHovered ? "30vw" : "5vw"; // Largura do sidebar
+    const sidebarWidth = isHovered ? "300px" : "80px"; // Largura do sidebar
 
     return (
       <aside
         id="sidebar"
-        className="p-2 bg-light"
+        className="p-2 bg-light d-flex flex-column"
         style={{
           height: "100vh",
           width: sidebarWidth,
@@ -79,6 +79,7 @@ function SideBar() {
           icon="gear-fill"
           href="settings"
           isOpen={isHovered}
+          style={{marginTop: "auto"}}
         />
       </aside>
     );
