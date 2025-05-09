@@ -42,11 +42,13 @@ const pool = mysql.createPool({
 
 // Importando as rotas
 const userRoutes = require("./userRoutes")(pool);
+const authRoutes = require("./authRoutes")(pool);
 //const XXXXRoutes = require("./XXXX")(pool);
 //const YYYYRoutes = require("./YYYY")(pool);
 
 // Usando as rotas
 app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 //app.use("/XXXX", XXXXRoutes);
 //app.use("/YYYY", YYYYRoutes);
 
@@ -67,14 +69,7 @@ app.get("/ping", (req, res) => {
 
 
 app.get("/", (req,res) => {
-    pool.query("SELECT * FROM teste", (err, results) => {
-        if (err) {
-            console.error("Erro ao executar a consulta:", err);
-            res.status(500).json({ error: "Erro ao executar a consulta" });
-            return;
-        }
-        res.json(results);
-    });
+    res.json({ message: "Hello World!" ,request: req.body});
 });
 
 app.listen(PORT, ()=>{
