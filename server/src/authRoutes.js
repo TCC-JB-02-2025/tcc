@@ -1,5 +1,5 @@
 const express = require('express');
-const { validateCPF } = require("./helpers");
+const { validateCPF, generateToken64 } = require("./helpers");
 
 // Importa o bcrypt para fazer o hash da senha
 const bcrypt = require('bcrypt');
@@ -14,6 +14,7 @@ module.exports = (pool) => {
   });
 
   router.post('/register', (req, res) => {
+    const requiredFields = ['full_name', 'cpf', 'email', 'password_hash', 'address_street', 'address_number', 'address_city', 'cep'];
     const { full_name, cpf, email, password, address_street, address_number, address_complement, address_city, cep } = req.body;
     const user = {
       full_name,
@@ -26,6 +27,7 @@ module.exports = (pool) => {
       address_city,
       cep
     };
+
     // Adiciona o hash da senha
     user.password_hash = bcrypt.hashSync(user.password, bcryptSalt);
     
@@ -34,7 +36,7 @@ module.exports = (pool) => {
     delete user.password; // não pode usar password=undifined, pq se não da erro
 
     // Passa por cada uma das chaves obrigatorias e verifica se existe
-    const requiredFields = ['full_name', 'cpf', 'email', 'password_hash', 'address_street', 'address_number', 'address_city', 'cep'];
+    
 
     for (const field of requiredFields) {
       if (!user[field]) { // se não existe da erro
