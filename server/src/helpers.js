@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 function exampleFunction(){
     return 2 + 2
 }
@@ -52,9 +54,33 @@ function validateCPF(cpf) {
     return true;
 }
 
+function generateToken64() {
+  try {
+    const crypto = require('crypto');
+
+    // Para um token hex de 64 caracteres, precisamos de 32 bytes (64 / 2)
+    const numBytes = 32;
+
+    // Gera 32 bytes aleatórios criptograficamente seguros
+    const randomBytes = crypto.randomBytes(numBytes);
+
+    // Converte os bytes para uma string hexadecimal
+    const token = randomBytes.toString('hex');
+
+    // O resultado será exatamente 64 caracteres hex (32 bytes * 2 chars/byte)
+    return token;
+
+  } catch (e) {
+    console.error("Erro ao gerar token seguro de 64 caracteres:", e);
+    console.error("O módulo 'crypto' é necessário e está embutido no Node.js.");
+    throw new Error("Falha ao gerar token: Módulo crypto não disponível ou erro.");
+  }
+}
+
 module.exports = {
     exampleFunction,
     validateCPF,
+    generateToken64,
     // Add other helper functions here
 };
 
