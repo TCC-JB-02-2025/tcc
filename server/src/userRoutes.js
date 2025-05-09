@@ -76,7 +76,7 @@ module.exports = (pool) => {
 
   router.get('/:id', (req, res) => {
     const userId = req.params.id;
-    pool.query('SELECT * FROM Users WHERE id = ?', [userId], (error, results) => {
+    pool.query('SELECT * FROM Users WHERE user_id = ?', [userId], (error, results) => {
       if (error) {
         console.error('Error fetching user:', error);
         return res.status(500).json({ error: 'Error fetching user' });

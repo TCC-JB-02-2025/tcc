@@ -6,6 +6,9 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10; // quantos calculos de hash serão feitos
 const bcryptSalt = bcrypt.genSaltSync(saltRounds);
 
+// Constantes
+const TOKEN_EXPIRATION_TIME = 60 * 60 * 1000; // 1 hora
+
 module.exports = (pool) => {
   const router = express.Router();
 
@@ -54,9 +57,23 @@ module.exports = (pool) => {
       if (error) {
         console.error('Error inserting user:', error);
         return res.status(500).json({ error: 'Error inserting user' });
+        // TODO: implementar tratamento de erro mais especifico
       }
+
+      // Cria um token para o usuario e coloca no BD
+      const token = generateToken64();
+      const user_id = results.insertId;
+      const expiration_timestamp = new Date(Date.now() + TOKEN_EXPIRATION_TIME); // 1 hora
+      pool.query('INSERT INTO TokensLogin (user_id, token, expiration_timestamp) VALUES (?, ?, ?)', [user_id, token, expiration_timestamp], (error, results) => {
+        if (error) {
+          console.error('Error inserting token:', error);
+          return res.status(500).json({ error: 'Error inserting token' });
+        }
+      });
+
       res.json({ 
         message: "User registered successfully", 
+        token: token,
         user_id: results.insertId, 
         user: user 
       });
