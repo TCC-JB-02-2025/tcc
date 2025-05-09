@@ -32,47 +32,47 @@ module.exports = (pool) => {
     });
   });
 
-  router.post('/', (req, res) => {
-    const { full_name, cpf, email, password_hash, address_street, address_number, address_complement, address_city, cep } = req.body;
-    const user = {
-      full_name,
-      cpf,
-      email,
-      password_hash,
-      address_street,
-      address_number,
-      address_complement,
-      address_city,
-      cep
-    };
+  // router.post('/', (req, res) => {
+  //   const { full_name, cpf, email, password_hash, address_street, address_number, address_complement, address_city, cep } = req.body;
+  //   const user = {
+  //     full_name,
+  //     cpf,
+  //     email,
+  //     password_hash,
+  //     address_street,
+  //     address_number,
+  //     address_complement,
+  //     address_city,
+  //     cep
+  //   };
 
-    // Passa por cada uma das chaves obrigatorias e verifica se existe
-    const requiredFields = ['full_name', 'cpf', 'email', 'password_hash', 'address_street', 'address_number', 'address_city', 'cep'];
+  //   // Passa por cada uma das chaves obrigatorias e verifica se existe
+  //   const requiredFields = ['full_name', 'cpf', 'email', 'password_hash', 'address_street', 'address_number', 'address_city', 'cep'];
 
-    for (const field of requiredFields) {
-      if (!user[field]) {
-        return res.status(400).json({ error: `Missing required field: ${field}`, request: req.body });
-      }
-    }
+  //   for (const field of requiredFields) {
+  //     if (!user[field]) {
+  //       return res.status(400).json({ error: `Missing required field: ${field}`, request: req.body });
+  //     }
+  //   }
 
-    // Verifica se o CPF é do tamanho certo e se é valido (usando a formula do CPF)
-    if (!validateCPF(user.cpf)) {
-      //return res.status(400).json({ error: 'Invalid CPF' });
-    }
+  //   // Verifica se o CPF é do tamanho certo e se é valido (usando a formula do CPF)
+  //   if (!validateCPF(user.cpf)) {
+  //     //return res.status(400).json({ error: 'Invalid CPF' });
+  //   }
     
-    pool.query('INSERT INTO Users SET ?', user, (error, results) => {
-      if (error) {
-        // Obtem codigo de erro
-        const errorCode = error.code;
-        if (errorCode === 'ER_DUP_ENTRY') {
-          // Verifica qual campo causou o erro
-          const field = error.sqlMessage.match(/Duplicate entry '.*' for key '(.*)'/)[1];
-          return res.status(409).json({ error: `Duplicate entry for field: ${field}` , request: req.body });
-        }
-      }
-      return res.status(201).json({ id: results.insertId, ...user });
-    });
-  });
+  //   pool.query('INSERT INTO Users SET ?', user, (error, results) => {
+  //     if (error) {
+  //       // Obtem codigo de erro
+  //       const errorCode = error.code;
+  //       if (errorCode === 'ER_DUP_ENTRY') {
+  //         // Verifica qual campo causou o erro
+  //         const field = error.sqlMessage.match(/Duplicate entry '.*' for key '(.*)'/)[1];
+  //         return res.status(409).json({ error: `Duplicate entry for field: ${field}` , request: req.body });
+  //       }
+  //     }
+  //     return res.status(201).json({ id: results.insertId, ...user });
+  //   });
+  // });
 
   router.get('/:id', (req, res) => {
     const userId = req.params.id;
