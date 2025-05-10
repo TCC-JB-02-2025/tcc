@@ -19,7 +19,8 @@ module.exports = (pool) => {
   // Rota de registro de usuário
   // O usuário deve fornecer os seguintes campos:
   // full_name, cpf, email, password_hash, address_street, address_number, address_complement, address_city, cep
-  // O campo password_hash é gerado automaticamente pelo bcrypt
+  // Ele retorna:
+  // user_id, token, user
   router.post('/register', (req, res) => {
     const requiredFields = ['full_name', 'cpf', 'email', 'password_hash', 'address_street', 'address_number', 'address_city', 'cep'];
     const { full_name, cpf, email, password, address_street, address_number, address_complement, address_city, cep } = req.body;
@@ -86,6 +87,11 @@ module.exports = (pool) => {
 
   });
 
+  // Rota de login
+  // O usuário deve fornecer os seguintes campos:
+  // email, password
+  // Ele retorna:
+  // user_id, token, user
   router.post('/login', (req, res) => {
     const { email, password } = req.body;
 
@@ -141,6 +147,11 @@ module.exports = (pool) => {
     });
   });
 
+  // Rota de logout
+  // O usuário deve fornecer o token no cabeçalho Authorization
+  // Ele retorna:
+  // message
+  // O token é deletado do banco de dados
   router.post('/logout', extractToken, (req, res) => {
     const token = req.token
 
@@ -156,6 +167,43 @@ module.exports = (pool) => {
         return res.status(404).json({ error: 'Token not found' });
       }
       res.json({ message: 'User logged out successfully' });
+    });
+  });
+
+  // Rota de verificação do usuario (ver se o token é valido)
+  // O usuário deve fornecer o token no cabeçalho Authorization
+  // Ele retorna:
+  // user 
+  router.get("/me", extractToken, (req, res) => {
+    const token = req.token;
+
+    if (!token){
+      return res.status(401).json({ error: 'Token not provided' });
+    }
+
+    // Verifica se o token existe no banco de dados
+    pool.query('SELECT * FROM TokensLogin WHERE token = ?', [token], (error, results) => {
+      if (error) {
+        return res.status(500).json({ error: 'Error fetching token' });
+      }
+      if (results.length === 0) {
+        return res.status(404).json({ error: 'Token not found' });
+      }
+
+      // Se o token existe, pega o user_id e busca o usuario no banco de dados
+      const user_id = results[0].user_id;
+      pool.query('SELECT * FROM Users WHERE user_id = ?', [user_id], (error, results) => {
+        if (error) {
+          return res.status(500).json({ error: 'Error fetching user' });
+        }
+        if (results.length === 0) {
+          return res.status(404).json({ error: 'User not found' });
+        }
+        const user = results[0];
+        delete user.password_hash; // Remove o hash da senha do objeto antes de enviar para o cliente
+
+        res.json(user); // retorna o usuario
+      });
     });
   });
 
