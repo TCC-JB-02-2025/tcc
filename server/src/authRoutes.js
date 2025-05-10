@@ -1,5 +1,5 @@
 const express = require('express');
-const { validateCPF, generateToken64 } = require("./helpers");
+const { validateCPF, generateToken64, extractToken } = require("./helpers");
 
 // Importa o bcrypt para fazer o hash da senha
 const bcrypt = require('bcrypt');
@@ -134,14 +134,27 @@ module.exports = (pool) => {
           user: user 
         });
       });
-
-
     });
-
-
-
-
   });
+
+  router.post('/logout', extractToken, (req, res) => {
+    const token = req.token
+
+    if (!token){
+      return res.status(401).json({ error: 'Token not provided' });
+    }
+
+    pool.query('DELETE FROM TokensLogin WHERE token = ?', [token], (error, results) => {
+      if (error) {
+        return res.status(500).json({ error: 'Error deleting token' });
+      }
+      if (results.affectedRows === 0) {
+        return res.status(404).json({ error: 'Token not found' });
+      }
+      res.json({ message: 'User logged out successfully' });
+    });
+  });
+  
   router.get('/:id', (req, res) => {
 
   });
