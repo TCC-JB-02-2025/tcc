@@ -77,10 +77,42 @@ function generateToken64() {
   }
 }
 
+function extractToken(req, res, next) {
+    const authHeader = req.get('Authorization');
+
+    // Verifica se o cabeçalho Authorization existe
+    if (!authHeader) {
+        // Se não houver cabeçalho, retorna um erro 401 para rotas que exigem autenticação
+        // Ou chama next() se o middleware for usado globalmente e algumas rotas não precisarem
+        // Para a rota de logout, a falta do token é um erro.
+        return res.status(401).json({ message: 'Cabeçalho Authorization não fornecido.' });
+    }
+
+    // O cabeçalho deve estar no formato "Bearer TOKEN"
+    const parts = authHeader.split(' ');
+
+    // Verifica se o formato é "Bearer TOKEN"
+    if (parts.length !== 2 || parts[0] !== 'Bearer') {
+        // Se o formato for inválido, retorna um erro 401
+        return res.status(401).json({ message: 'Formato do token inválido. Use: Bearer <token>' });
+    }
+
+    // Extrai o token (a segunda parte após "Bearer")
+    const token = parts[1];
+
+    // Armazena o token no objeto req para uso posterior
+    req.token = token;
+
+    // Continua para o próximo middleware ou handler da rota
+    next();
+}
+
+
 module.exports = {
     exampleFunction,
     validateCPF,
     generateToken64,
+    extractToken,
     // Add other helper functions here
 };
 
