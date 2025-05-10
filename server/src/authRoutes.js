@@ -33,7 +33,7 @@ module.exports = (pool) => {
 
     // Adiciona o hash da senha
     user.password_hash = bcrypt.hashSync(user.password, bcryptSalt);
-    
+
     // Apaga a senha do objeto antes de enviar para o banco de dados
     // Isso é importante para não enviar a senha em texto claro pro DB
     delete user.password; // não pode usar password=undifined, pq se não da erro
@@ -82,6 +82,66 @@ module.exports = (pool) => {
 
   });
 
+  router.post('/login', (req, res) => {
+    const { email, password } = req.body;
+
+    // Adiciona o hash da senha
+    const password_hash = bcrypt.hashSync(password, bcryptSalt);
+
+    const requiredFields = ['email', 'password_hash'];
+    const user = {
+      email,
+      password_hash
+    };
+
+    // Verifica os campos obrigatorios
+    for (const field of requiredFields) {
+      if (!user[field]) {
+        return res.status(400).json({ error: `Missing required field: ${field}`, request: req.body });
+      }
+    }
+
+    pool.query('SELECT * FROM Users WHERE email = ?', [user.email], (error, results) => {
+      if (error) {
+        console.error('Error fetching user:', error);
+        return res.status(500).json({ error: 'Error fetching user' });
+      };
+      if (results.length === 0) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      const user = results[0];
+
+      // Verifica se a senha está correta
+      // O bcrypt.compareSync compara a senha em texto claro com o hash, é essencial pois
+      // o hash é gerado de forma diferente a cada vez
+      if (!bcrypt.compareSync(password, user.password_hash)) {
+        return res.status(401).json({ error: 'Invalid password' });
+      }
+
+      // Cria um token para o usuario e coloca no BD
+      const token = generateToken64();
+      const user_id = user.user_id;
+      const expiration_timestamp = new Date(Date.now() + TOKEN_EXPIRATION_TIME); 
+      pool.query('INSERT INTO TokensLogin (user_id, token, expiration_timestamp) VALUES (?, ?, ?)', [user_id, token, expiration_timestamp], (error, results) => {
+        if (error) {
+          console.error('Error inserting token:', error);
+          return res.status(500).json({ error: 'Error inserting token' });
+        }
+        res.json({ 
+          message: "User logged in successfully", 
+          token: token,
+          user_id: user.user_id, 
+          user: user 
+        });
+      });
+
+
+    });
+
+
+
+
+  });
   router.get('/:id', (req, res) => {
 
   });
