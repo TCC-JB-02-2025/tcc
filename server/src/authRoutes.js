@@ -16,6 +16,10 @@ module.exports = (pool) => {
     res.json({ message: "Auth route" });
   });
 
+  // Rota de registro de usuário
+  // O usuário deve fornecer os seguintes campos:
+  // full_name, cpf, email, password_hash, address_street, address_number, address_complement, address_city, cep
+  // O campo password_hash é gerado automaticamente pelo bcrypt
   router.post('/register', (req, res) => {
     const requiredFields = ['full_name', 'cpf', 'email', 'password_hash', 'address_street', 'address_number', 'address_city', 'cep'];
     const { full_name, cpf, email, password, address_street, address_number, address_complement, address_city, cep } = req.body;
@@ -154,7 +158,7 @@ module.exports = (pool) => {
       res.json({ message: 'User logged out successfully' });
     });
   });
-  
+
   router.get('/:id', (req, res) => {
 
   });
